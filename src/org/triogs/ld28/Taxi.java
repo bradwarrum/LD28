@@ -8,9 +8,9 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Taxi extends Sprite {
-	private static final float ACC = (float) .2;
-	private static final float Kf = (float) .999;
-	private static final float MAXV =(float) 1;
+	private static final float ACC = (float) 200;
+	private static final float Kf = (float) .99;
+	private static final float MAXV =(float) 600;
 	private static final float RPS = (float) 70;
 	
 	private Vector2f _mapPos;
@@ -37,33 +37,32 @@ public class Taxi extends Sprite {
 	}
 	public void update(Input i, int elapsedTime) {
 		Vector2f oldVel = getVelocity();
+		float dt = (float)elapsedTime / (float) 1000;
 		float rot = 0;
 		if (i.isKeyDown(Input.KEY_A)) {
-			rot -=RPS * (float)elapsedTime / (float)1000;
+			rot -=RPS * dt;
 		}
 		if (i.isKeyDown(Input.KEY_D)) {
-			rot += RPS * (float)elapsedTime / (float)1000;
+			rot += RPS * dt;
 
 		}
+		setRotation(rot);
 		updateTotalRotation();
 		oldVel = oldVel.add(rot);
-		float scale = ACC * (float) elapsedTime / (float)1000;
-		Vector2f velup = new Vector2f(scale,0);
-		velup.setTheta(getTotalRotation());
-		if (i.isKeyDown(Input.KEY_W)){ 
-			oldVel = oldVel.add(velup);
+		
+		Vector2f acc = new Vector2f(1,0);
+		acc.setTheta(getTotalRotation());
+		acc.scale(ACC * dt);
+		if (i.isKeyDown(Input.KEY_W)) {
+			oldVel.add(acc);
+		}else if (i.isKeyDown(Input.KEY_S)) {
+			oldVel.sub(acc);
+		}else {
+			oldVel.scale(Kf);
 		}
-		else if (i.isKeyDown(Input.KEY_S)) {
-			velup = velup.negate();
-			oldVel = oldVel.add(velup);
-		} else {
-			oldVel = oldVel.scale(Kf);
-		}
-		System.out.println(oldVel.length());
-		oldVel = oldVel.scale(Math.min(MAXV/ oldVel.length(), 1));
+		oldVel = MathT.clamp(oldVel, MAXV);
 		setVelocity(oldVel);
-		this.addWorldPos(getVelocity());
-		this.setRotation(rot);
+		addWorldPos(getVelocity().copy().scale(dt));
 		updateBounds();
 		updateAnimation(elapsedTime);
 		rotateBuffer(rot);

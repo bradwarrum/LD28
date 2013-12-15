@@ -25,7 +25,7 @@ public class FalloutTaxi extends StateBasedGame{
 	public static void main(String[] args) {
 		try {
 			AppGameContainer app = new AppGameContainer(new FalloutTaxi());
-			app.setDisplayMode(1920, 1080, true);
+			app.setDisplayMode(1024, 768, false);
 			app.setShowFPS(true);
 			app.setTargetFrameRate(60);
 			app.start();
