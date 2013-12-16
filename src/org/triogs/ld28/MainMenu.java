@@ -32,6 +32,11 @@ public class MainMenu extends BasicGameState {
 		BombTimer.reset(300);
 		BombTimer.start();
 		Compass.init(new Vector2f(0,0), screenDim);
+		VIP.loadNames();
+		VIP test = new VIP();
+		VIPDisplay.init(screenDim);
+		VIPDisplay.setVIP(new VIP());
+		
 		// TODO Auto-generated method stub
 
 	}
@@ -42,13 +47,13 @@ public class MainMenu extends BasicGameState {
 		Rectangle visibleMap = taxi.getVisibleMap(screenDim);
 		map.draw(visibleMap);
 		taxi.draw(g,false);
-		taxi.drawWorldPos(g, new Vector2f(100,100));
 		//map.drawFrame(g, taxi);
 		scrub.drawIfNecessary(visibleMap, g, false);
 		BombTimer.draw(g);
 		//g.drawString("MEM total(used):   " + (Runtime.getRuntime().totalMemory()/1000000) + "(" + ((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1000000) + ") MB", 10, 25);
 		Compass.draw(g);
-		
+		VIPDisplay.draw(g);
+
 
 	}
 

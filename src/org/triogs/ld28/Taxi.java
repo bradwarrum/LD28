@@ -32,9 +32,6 @@ public class Taxi extends Sprite {
 		return _mapPos;
 	}
 	
-	public void drawWorldPos(Graphics g, Vector2f pos) {
-		g.drawString("POS: (" + getWorldPos().x + ", " + getWorldPos().y + ")", (int)pos.x, (int)pos.y);
-	}
 	public void update(Input i, int elapsedTime) {
 		Vector2f oldVel = getVelocity();
 		float dt = (float)elapsedTime / (float) 1000;

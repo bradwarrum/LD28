@@ -15,7 +15,7 @@ public class Scrub extends Sprite {
 	
 	private Vector2f _mapPos;
 	public Scrub() {
-		super("res/img/scrub.png",false,new Dimension(64,64), BoundType.CIRCULAR);
+		super("res/img/scrub.png",true,new Dimension(64,64), BoundType.CIRCULAR);
 		updateAnimation(0);
 		freeze();
 		
@@ -63,7 +63,6 @@ public class Scrub extends Sprite {
 		this.setPosition(t.getPosition().copy().add(toTaxi));
 		updateBounds();
 		updateAnimation(elapsedTime);
-		System.out.println((float)((getVelocity().getTheta() - oldVel.getTheta())));
 		float rot = (float)((getVelocity().getTheta() - oldVel.getTheta()));
 		setRotation(rot);
 		updateTotalRotation();

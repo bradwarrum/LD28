@@ -66,7 +66,6 @@ public class BombTimer {
 		g.drawImage(bg, renderPoint.x, renderPoint.y);
 		g.setFont(timerFont);
 		g.drawString((int)secondsLeft / 60 + ":" +String.format("%02d",(int)secondsLeft % 60), textPoint.x, textPoint.y);
-		System.out.println((int)secondsLeft / 60 + ":" +String.format("%02d",(int)secondsLeft % 60));
 	}
 
 }

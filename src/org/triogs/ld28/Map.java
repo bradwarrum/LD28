@@ -61,7 +61,6 @@ public class Map {
 							t.getPosition().y - (t.getWorldPos().y % _tileSize.height) + (k-index.y) * _tileSize.height,
 							_tileSize.width, _tileSize.height);
 					if (t.collides(col)) {
-						System.out.println("COLLISION ON MAP");
 						// Find the direction we should return the car
 						int x = index.x - i;
 						int y = index.y - k;
