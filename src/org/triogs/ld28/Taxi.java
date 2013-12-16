@@ -72,10 +72,14 @@ public class Taxi extends Sprite {
 		setVelocity(new Vector2f(0,0));
 	}
 	
+	public float speedAsPercentage() {
+		return getVelocity().length() / MAXV;
+	}
+	
 	public Rectangle getVisibleMap(Dimension screenSize) {
 		Vector2f tl = new Vector2f(getWorldPos().x - (float)screenSize.width / (float)2,
 				getWorldPos().y - (float)screenSize.height / (float)2);
-		return new Rectangle(tl.x, tl.y, tl.x + screenSize.width, tl.y + screenSize.height);
+		return new Rectangle(tl.x, tl.y, screenSize.width, screenSize.height);
 		
 	}
 	

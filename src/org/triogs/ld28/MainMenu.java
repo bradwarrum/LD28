@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -13,18 +14,24 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MainMenu extends BasicGameState {
 
 	private Taxi taxi;
-	private Sprite taxi2;
 	private Input inp;
+	private Scrub scrub;
 	private Map map;
+	private Dimension screenDim;
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		taxi = new Taxi(new Dimension(container.getWidth(), container.getHeight()), new Vector2f(500,500));
-		taxi2 = new Sprite("res/img/taxi.png", false, new Dimension(0,0), Sprite.BoundType.RECTANGULAR);
-		taxi2.setPosition(new Vector2f(100,200));
+		screenDim = new Dimension(container.getWidth(), container.getHeight());
+		taxi = new Taxi(screenDim, new Vector2f(500,500));
 		inp = new Input(container.getHeight());
 		map = new Map("res/map/test1/test1.tmx");
-		
+		scrub = new Scrub();
+		scrub.setWorldPos(new Vector2f(1000,500));
+		scrub.setPosition(new Vector2f(700,500));
+		BombTimer.init(screenDim);
+		BombTimer.reset(300);
+		BombTimer.start();
+		Compass.init(new Vector2f(0,0), screenDim);
 		// TODO Auto-generated method stub
 
 	}
@@ -32,11 +39,16 @@ public class MainMenu extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		map.draw(taxi.getVisibleMap(new Dimension(container.getWidth(), container.getHeight())));
-		taxi.draw(g,true);
-		taxi2.draw(g,true);
+		Rectangle visibleMap = taxi.getVisibleMap(screenDim);
+		map.draw(visibleMap);
+		taxi.draw(g,false);
 		taxi.drawWorldPos(g, new Vector2f(100,100));
-		map.drawFrame(g, taxi);
+		//map.drawFrame(g, taxi);
+		scrub.drawIfNecessary(visibleMap, g, false);
+		BombTimer.draw(g);
+		//g.drawString("MEM total(used):   " + (Runtime.getRuntime().totalMemory()/1000000) + "(" + ((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/1000000) + ") MB", 10, 25);
+		Compass.draw(g);
+		
 
 	}
 
@@ -45,8 +57,10 @@ public class MainMenu extends BasicGameState {
 			throws SlickException {
 		// TODO Auto-generated method stub
 		taxi.update(inp, delta);
-		taxi2.update(inp, delta);
-		map.collides(taxi);
+		map.collidesTaxi(taxi);
+		scrub.update(delta, taxi);
+		BombTimer.update(delta);
+		Compass.update(taxi.getWorldPos());
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class Sprite {
 				_frames.setAutoUpdate(false);
 			} else {
 				ss = new SpriteSheet(img, tilesize.width, tilesize.height);
-				_frames = new Animation(ss, 30);
+				_frames = new Animation(ss, 24);
 				_frames.setAutoUpdate(false);
 			}
 			_btype = bounding;

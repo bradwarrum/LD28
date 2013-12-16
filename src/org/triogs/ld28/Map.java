@@ -50,7 +50,7 @@ public class Map {
 		return new Dimension(_tileSize.width * _mapSize.width, _tileSize.height * _mapSize.height);
 	}
 	
-	public boolean collides(Taxi t) {
+	public boolean collidesTaxi(Taxi t) {
 		Vector2f pos = t.getWorldPos();
 		Point index = new Point((int)(pos.x / _tileSize.width), (int)(pos.y / _tileSize.height));
 		for (int i = index.x -2; i < index.x + 2; i++) {
@@ -62,6 +62,10 @@ public class Map {
 							_tileSize.width, _tileSize.height);
 					if (t.collides(col)) {
 						System.out.println("COLLISION ON MAP");
+						// Find the direction we should return the car
+						int x = index.x - i;
+						int y = index.y - k;
+						t.addWorldPos(new Vector2f(x,y).normalise());
 						t.stopTheCar();
 						return true;
 					}
@@ -101,7 +105,6 @@ public class Map {
 		int height = (int)(screen.getHeight() / _tileSize.height);
 		int sx =  (int)(screen.getLocation().x / _tileSize.width);
 		int sy =  (int)(screen.getLocation().y / _tileSize.height);
-		//_bgmap.render(-(int)screen.getLocation().x, -(int)screen.getLocation().y);
 		_bgmap.render((int)remainder.x, (int)remainder.y, sx, sy, width+1, height+1, 1, false);
 	}
 }
