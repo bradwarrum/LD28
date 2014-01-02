@@ -1,12 +1,13 @@
 package org.triogs.ld28;
 
+import java.awt.Dimension;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.Scanner;
 
-public class VIP {
+public class VIP extends Sprite {
 	
 	public static String[] LastNames;
 	public static String[] MaleNames;
@@ -60,6 +61,7 @@ public class VIP {
 	private TraitSet traits;
 	
 	public VIP() {
+		super("res/img/vip.png", false, new Dimension(0,0), BoundType.CIRCULAR);
 		createPersona();
 	}
 	

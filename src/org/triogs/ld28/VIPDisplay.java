@@ -17,6 +17,7 @@ public class VIPDisplay {
 	private static UnicodeFont nameFont;
 	private static VIP displayedVIP;
 	
+	@SuppressWarnings("unchecked")
 	public static void init(Dimension screenSize) {
 		try {
 			bg = new Image("res/img/VIPpanel.png");

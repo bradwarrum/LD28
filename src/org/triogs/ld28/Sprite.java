@@ -19,11 +19,12 @@ public class Sprite {
 	private boolean _animated;
 	private Image _bufImage;
 	private float _rotation;
-	private float _totalRotation;
 	private Vector2f _position;
 	private Vector2f _velocity;
 	private Shape _bounds;
 	private BoundType _btype;
+	private Rectangle _initBound;
+	private Vector2f _mapPos;
 	
 	public static enum BoundType {
 		NONE,
@@ -45,7 +46,6 @@ public class Sprite {
 		try {
 			_position = new Vector2f(0,0);
 			_rotation = 0;
-			_totalRotation = 0;
 			_velocity = new Vector2f(0,0);
 			_animated = animated;
 			Image img = new Image(fileref);
@@ -58,8 +58,9 @@ public class Sprite {
 				_frames.setAutoUpdate(false);
 			} else {
 				ss = new SpriteSheet(img, tilesize.width, tilesize.height);
-				_frames = new Animation(ss, 24);
+				_frames = new Animation(ss, 60);
 				_frames.setAutoUpdate(false);
+				_frames.setLooping(true);
 			}
 			_btype = bounding;
 			if (bounding == BoundType.CIRCULAR) {
@@ -68,6 +69,7 @@ public class Sprite {
 				_bounds = new Circle(0,0,dist);
 			}else if (bounding == BoundType.RECTANGULAR) {
 				_bounds = new Rectangle(0,0, tilesize.width, tilesize.height);
+				_initBound = (Rectangle)_bounds;
 			}else {
 				_bounds = null;
 			}
@@ -76,11 +78,21 @@ public class Sprite {
 		}
 	}
 	
+	public void setBoundScale(float scale) {
+		if (_btype == BoundType.CIRCULAR) {
+			_bounds = _bounds.transform(Transform.createScaleTransform(scale, scale));
+		}
+	}
+	
 	public void setPosition(Vector2f pos) {
 		_position = pos;
 		if (_btype != BoundType.NONE) {
 			_bounds.setCenterX(_position.x);
 			_bounds.setCenterY(_position.y);
+			if (_btype == BoundType.RECTANGULAR) {
+				_initBound.setCenterX(_bounds.getCenterX());
+				_initBound.setCenterY(_bounds.getCenterY());
+			}
 		}
 	}
 	public void addPosition(Vector2f delta) {
@@ -88,11 +100,27 @@ public class Sprite {
 		if (_btype != BoundType.NONE) {
 			_bounds.setCenterX(_position.x);
 			_bounds.setCenterY(_position.y);
+			if (_btype == BoundType.RECTANGULAR) {
+				_initBound.setCenterX(_bounds.getCenterX());
+				_initBound.setCenterY(_bounds.getCenterY());
+			}
 		}
 	}
 	
 	public Vector2f getPosition() {
 		return _position;
+	}
+	
+	public void setWorldPos(Vector2f pos) {
+		_mapPos = pos;
+	}
+	
+	public void addWorldPos(Vector2f delta) {
+		_mapPos = _mapPos.add(delta);
+	}
+	
+	public Vector2f getWorldPos() {
+		return _mapPos;
 	}
 	
 	public void setVelocity(Vector2f vel) {
@@ -103,32 +131,28 @@ public class Sprite {
 		return _velocity;
 	}
 	
-	public void setRotation(float rot) {
-		_rotation = rot;
+	public void setRotation(float theta) {
+		_rotation = theta;
+		rotateBuffer(_rotation);
 	}
 	
-	public void updateTotalRotation() {
-		_totalRotation += _rotation;
-		while (_totalRotation >= 360) {
-			_totalRotation -= 360;
+	public void addRotation(float delta) {
+		_rotation += delta;
+		while (_rotation >=360) {
+			_rotation -= 360;
 		}
-		while (_totalRotation < 0) {
-			_totalRotation +=360;
+		while (_rotation < 0) {
+			_rotation += 360;
 		}
+		rotateBuffer(_rotation);
 	}
 	
 	public float getRotation() {
 		return _rotation;
 	}
-	
-	public float getTotalRotation() {
-		return _totalRotation;
-	}
 	public void update(Input i, int elapsedTime) {
 		updateBounds();
 		updateAnimation(elapsedTime);
-		rotateBuffer(_rotation);
-		updateTotalRotation();
 	}
 	
 	protected void updateAnimation(int elapsedTime) {
@@ -143,13 +167,14 @@ public class Sprite {
 			_bounds.setCenterX(_position.x);
 			_bounds.setCenterY(_position.y);
 		}else if (_btype == BoundType.RECTANGULAR) {
+			_bounds = _initBound;
 			_bounds.setCenterX(_position.x);
 			_bounds.setCenterY(_position.y);
 			_bounds = _bounds.transform(Transform.createRotateTransform((float)Math.toRadians(_rotation), _position.x, _position.y));
 		}
 	}
 	protected void rotateBuffer(float theta) {
-		_bufImage.rotate(theta);
+		_bufImage.setRotation(theta);
 	}
 	
 	public boolean collides (Sprite s) {

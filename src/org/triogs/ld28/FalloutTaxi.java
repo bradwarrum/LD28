@@ -27,7 +27,9 @@ public class FalloutTaxi extends StateBasedGame{
 			AppGameContainer app = new AppGameContainer(new FalloutTaxi());
 			app.setDisplayMode(1024, 768, false);
 			app.setShowFPS(true);
-			app.setTargetFrameRate(60);
+			//app.setTargetFrameRate(60);
+			//app.setVSync(true);
+			app.setClearEachFrame(false);
 			app.start();
 		} catch (SlickException e) {
 			e.printStackTrace();

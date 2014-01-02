@@ -12,48 +12,43 @@ public class Taxi extends Sprite {
 	private static final float Kf = (float) .99;
 	private static final float MAXV =(float) 600;
 	private static final float RPS = (float) 70;
+
 	
-	private Vector2f _mapPos;
 	public Taxi(Dimension screenSize, Vector2f startingPos) {
 		super("res/img/taxi.png", false, new Dimension(0, 0), BoundType.RECTANGULAR);
 		setPosition(new Vector2f((float)(screenSize.width / 2.0), (float)(screenSize.height / 2.0)));
-		_mapPos = startingPos;
+		setWorldPos(startingPos);
 	}
-	
-	public void setWorldPos(Vector2f pos) {
-		_mapPos = pos;
-	}
-	
-	public void addWorldPos(Vector2f delta) {
-		_mapPos = _mapPos.add(delta);
-	}
-	
-	public Vector2f getWorldPos() {
-		return _mapPos;
-	}
+
 	
 	public void update(Input i, int elapsedTime) {
 		Vector2f oldVel = getVelocity();
 		float dt = (float)elapsedTime / (float) 1000;
-		float rot = 0;
+		float rot = (float)oldVel.getTheta();
 		if (i.isKeyDown(Input.KEY_A)) {
-			rot -=RPS * dt;
+			addRotation( - RPS * dt);
+			rot -= RPS * dt;
 		}
 		if (i.isKeyDown(Input.KEY_D)) {
+			addRotation( RPS * dt);
 			rot += RPS * dt;
 
 		}
-		setRotation(rot);
-		updateTotalRotation();
-		oldVel = oldVel.add(rot);
-		
+		oldVel.setTheta(rot);
+		float oldabs = oldVel.lengthSquared();
 		Vector2f acc = new Vector2f(1,0);
-		acc.setTheta(getTotalRotation());
+		acc.setTheta(getRotation());
 		acc.scale(ACC * dt);
 		if (i.isKeyDown(Input.KEY_W)) {
 			oldVel.add(acc);
+			if (oldVel.lengthSquared() < oldabs) {
+				oldVel.add(acc.copy().scale(3));
+			}
 		}else if (i.isKeyDown(Input.KEY_S)) {
 			oldVel.sub(acc);
+			if (oldVel.lengthSquared() < oldabs) {
+				oldVel.sub(acc.copy().scale(3));
+			}
 		}else {
 			oldVel.scale(Kf);
 		}
@@ -62,7 +57,6 @@ public class Taxi extends Sprite {
 		addWorldPos(getVelocity().copy().scale(dt));
 		updateBounds();
 		updateAnimation(elapsedTime);
-		rotateBuffer(rot);
 	}
 	
 	public void stopTheCar() {
