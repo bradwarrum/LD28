@@ -29,7 +29,7 @@ public class FalloutTaxi extends StateBasedGame{
 			app.setShowFPS(true);
 			//app.setTargetFrameRate(60);
 			//app.setVSync(true);
-			app.setClearEachFrame(false);
+			//app.setClearEachFrame(false);
 			app.start();
 		} catch (SlickException e) {
 			e.printStackTrace();

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="80" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="asphalt" tilewidth="64" tileheight="64">
+  <image source="asphalt.png" width="128" height="512"/>
+ </tileset>
+ <tileset firstgid="17" name="col" tilewidth="64" tileheight="64">
+  <image source="col.png" width="128" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="passable" value="false"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="passable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="19" name="buildings" tilewidth="64" tileheight="64">
+  <image source="buildings.png" width="128" height="320"/>
+ </tileset>
+ <layer name="Collision Layer" width="80" height="80" opacity="0.26">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3WsQ2AMAwAwawQ9h+WGaDAeXHF99ZJlr3XWlsa7tKj+PHj140fvxP93Ot3fn4efvw68eNX9puefzou/E70s7/f+P3dkB8/ft2Y8DvRz+5+4/d3Q378+HXjN+s3Pf907Pjx68aPX9WPof+PH79y/PiV/abnn44HP37d+PHj140fP37d+PHj140fP37d+PHj140fP37d+PHj140fP37d+PHj140fP37d+PE7yU+a6Abe5/XGAGQAAA==
+  </data>
+ </layer>
+ <layer name="Base Layer" width="80" height="80">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3csWpCQRBA0Q1pQkLg/f/XxmCKFLHIuy7CeA4M2HpRZ1HZtc47LvN+mbefx8/uPw2Opd+3I87vfn/NdC+bZ7qPzTPd5+aZ7nXzTGd/NGefr/PLVXmt6KdfpV+jX6NfY/829zz/PSP9Gu/fxv5o9Gv0a3z+NfZvo1/j/dvYH41+jX6Nfo1+zdl+9u9VObvop1+lX6Nfo19j/zbOf41+jX6Nfo1+je+fG79/NPo9jn6Nfo1+jX6Nfo1+jX6Nfo1+jX6Nfo1+jX6Nfo1+jX6Nfo1+jX6Nfo1+jX6Nfo1+jX6Nfvf9/8atmWz3/bHT75DdfX/s9Dtkd98fO/0O2d33x06/Q9b+eBznl0a/Rr+1vgD+xHNUAGQAAA==
+  </data>
+ </layer>
+ <layer name="Building Layer" width="80" height="80" opacity="0.5">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3ZywqCUBRAUf+hd/3/f2ajggxu7IFJa8GZOZCNcI86TU+nadz5i2v/xWGe6+AcV7pHAIBXu3kug7Nf6R5/2WN/vg2O/fmdfo1+jX6Nfo3vB7Bd9ufG+dHo1+jX2F9gu+wvjfOj0a/Rr9Gv0a8Z7Wd/XjbSz3P3mX6Nfo1+jX7N6Pnr/XeZ/a/Rr9Gv0a/Rr/H/CAAAAAAAAAAAAAAAlt0Bg6PiFABkAAA=
+  </data>
+ </layer>
+</map>

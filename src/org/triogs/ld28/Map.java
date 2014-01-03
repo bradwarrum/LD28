@@ -153,5 +153,6 @@ public class Map {
 		int sx =  (int)(screen.getLocation().x / _tileSize.width);
 		int sy =  (int)(screen.getLocation().y / _tileSize.height);
 		_bgmap.render((int)remainder.x, (int)remainder.y, sx, sy, width+1, height+1, 1, false);
+		//_bgmap.render((int)remainder.x, (int)remainder.y, sx, sy, width+1, height+1, 2, false);
 	}
 }

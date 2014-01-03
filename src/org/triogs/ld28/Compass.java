@@ -15,6 +15,7 @@ public class Compass {
 	private static Point bgRenderPoint;
 	private static Point roseCenter;
 	private static Vector2f shPos;
+	private static Vector2f dest;
 	
 	public static void init(Vector2f safehousePos, Dimension screenSize) {
 		try {
@@ -23,6 +24,7 @@ public class Compass {
 			angle = 0;
 			rose.setRotation(angle);
 			shPos = safehousePos;
+			dest = shPos;
 			bgRenderPoint = new Point(0,screenSize.height - bg.getHeight());
 			roseCenter = new Point(bgRenderPoint.x + 13, bgRenderPoint.y + 95);
 		}catch (SlickException e) {
@@ -31,7 +33,16 @@ public class Compass {
 	}
 	
 	public static void update(Vector2f worldPos) {
-		Vector2f betw = shPos.copy().sub(worldPos);
+		if (MainMenu.sprites.taxi.hasPassenger) {
+			dest = shPos;
+		}
+		else {
+			dest = VIPDisplay.getVIP().getWorldPos();
+			if (dest == null) {
+				dest = shPos;
+			}
+		}
+		Vector2f betw = dest.copy().sub(worldPos);
 		angle = (float)betw.getTheta();
 		rose.setRotation(angle);
 	}

@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class SpriteManager {
 	private ArrayList<Scrub> scrubs;
+	private ArrayList<Scrub> deadscrubs;
 	private ArrayList<VIP> vips;
 	protected Taxi taxi;
 	private ArrayList<Pair<Sprite,String>> additions;
@@ -23,6 +24,7 @@ public class SpriteManager {
 	
 	public SpriteManager(Dimension screenSize, boolean[][] passableMap, Dimension tileSize) {
 		scrubs = new ArrayList<Scrub>();
+		deadscrubs = new ArrayList<Scrub> ();
 		vips = new ArrayList<VIP>();
 		taxi = new Taxi(screenSize, new Vector2f(500,500));
 		this.passable = passableMap;
@@ -38,37 +40,58 @@ public class SpriteManager {
 				spawnPoint.y * tilesize.height + tilesize.height / 2));
 		additions.add(new Pair<Sprite, String>(v, "vip"));
 	}
+	public void addVIP(VIP vip) {
+		Point spawnPoint = findSpawnPoint();
+		vip.setWorldPos(new Vector2f(spawnPoint.x * tilesize.width + tilesize.width / 2, 
+				spawnPoint.y * tilesize.height + tilesize.height / 2));
+		additions.add(new Pair<Sprite, String>(vip, "vip"));
+	}
+	
+	public ArrayList<VIP> getVIPs() {
+		return vips;
+	}
 	
 	public void addScrub() {
 		Point spawnPoint = findSpawnPoint();
-		System.out.println(spawnPoint);
 		Scrub s = new Scrub();
 		s.setWorldPos(new Vector2f(spawnPoint.x * tilesize.width + tilesize.width / 2, 
 				spawnPoint.y * tilesize.height + tilesize.height / 2));
 		additions.add(new Pair<Sprite, String>(s, "scrub"));
 	}
 	
+	
 	public void update(int elapsedMS, Input i, Map m) {
 		taxi.update(i, elapsedMS);
 		for (VIP v : vips) {
 			v.update(i, elapsedMS);
+			v.update(elapsedMS, taxi, m);
+			v.collidesTaxi(taxi);
 		}
 		for (Scrub s: scrubs) {
 			s.update(elapsedMS, taxi, m);
-			s.collidesTaxi(taxi);
+			if (s.collidesTaxi(taxi)) {
+				deletions.add(new Pair<Sprite, String> (s, "scrub"));
+				additions.add(new Pair<Sprite, String> (s, "deadscrub"));
+			}
+		}
+		for (Scrub s: deadscrubs) {
+			s.update(elapsedMS, taxi, m);
 		}
 		confirmAdditions();
 		confirmDeletions();
 	}
 	
 	public void draw(Graphics g, Rectangle screen, Map m) {
+		for (Scrub s: deadscrubs) {
+			s.drawIfNecessary(screen, g, false);
+		}
 		for (Scrub s: scrubs) {
 			s.drawIfNecessary(screen, g, false);
-			m.drawFrame(g, s);
+			//m.drawFrame(g, s);
 			
 		}
 		for (VIP v: vips) {
-			v.draw(g);
+			v.drawWithText(g);
 		}
 		taxi.draw(g);
 	}
@@ -80,6 +103,9 @@ public class SpriteManager {
 			}
 			else if (p.getSecond().equals("scrub")) {
 				scrubs.add((Scrub)p.getFirst());
+			}
+			else if (p.getSecond().equals("deadscrub")) {
+				deadscrubs.add((Scrub)p.getFirst());
 			}
 		}
 		additions.clear();

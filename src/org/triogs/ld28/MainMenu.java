@@ -16,7 +16,7 @@ public class MainMenu extends BasicGameState {
 	private Input inp;
 	private Map map;
 	private Dimension screenDim;
-	private SpriteManager sprites;
+	public static SpriteManager sprites;
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
@@ -33,7 +33,12 @@ public class MainMenu extends BasicGameState {
 		Compass.init(new Vector2f(0,0), screenDim);
 		VIP.loadNames();
 		VIPDisplay.init(screenDim);
-		VIPDisplay.setVIP(new VIP());
+		VIP[] vips = new VIP[3];
+		for (int i = 0; i<3; i++) {
+			vips[i] = new VIP();
+			sprites.addVIP(vips[i]);
+		}
+		VIPDisplay.setVIPs(vips);
 		
 		// TODO Auto-generated method stub
 
@@ -62,6 +67,7 @@ public class MainMenu extends BasicGameState {
 		map.collidesTaxi(sprites.taxi);
 		BombTimer.update(delta);
 		Compass.update(sprites.taxi.getWorldPos());
+		VIPDisplay.update(inp);
 	}
 
 	@Override

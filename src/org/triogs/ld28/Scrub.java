@@ -24,7 +24,7 @@ public class Scrub extends Sprite {
 	public Scrub() {
 		super("res/img/scrubwalk.png",true,new Dimension(64,64), BoundType.CIRCULAR);
 		updateAnimation(0);
-		this.setBoundScale((float)0.5);
+		this.setBoundScale((float)0.35);
 		freeze();
 		try {
 		Image i = new Image("res/img/scrubdie.png");
@@ -42,7 +42,6 @@ public class Scrub extends Sprite {
 	}
 	public void freeze() {
 		this.setVelocity(new Vector2f(0,0));
-		//this.setRotation(0);
 	}
 	
 	public void update(int elapsedTime, Taxi t, Map m) {
@@ -80,11 +79,16 @@ public class Scrub extends Sprite {
 		}
 	}
 	
-	public void collidesTaxi(Taxi t) {
-		if (!_dead && this.collides(t) && t.speedAsPercentage() > 0.2) {
+	public boolean collidesTaxi(Taxi t) {
+		if (!_dead && this.collides(t) && t.speedAsPercentage() > 0.28) {
 			this._dead = true;
 			t.getVelocity().scale((float).76);
+			return true;
 		}
+		else if (!_dead && this.collides(t)) {
+			this.addWorldPos(getVelocity().copy().negate().normalise());
+		}
+		return false;
 	}
 	
 	public void drawIfNecessary(Rectangle screen, Graphics g, boolean showBounds) {

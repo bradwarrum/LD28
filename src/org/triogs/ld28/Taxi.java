@@ -10,14 +10,19 @@ import org.newdawn.slick.geom.Vector2f;
 public class Taxi extends Sprite {
 	private static final float ACC = (float) 200;
 	private static final float Kf = (float) .99;
-	private static final float MAXV =(float) 600;
-	private static final float RPS = (float) 70;
+	private static final float MAXV =(float) 800;
+	private static final float RPS = (float) 90;
+	private static final float PICKUPDIST = 200;
+	private static boolean pubtndown = false;
+	public boolean hasPassenger;
+	private VIP passenger;
 
 	
 	public Taxi(Dimension screenSize, Vector2f startingPos) {
 		super("res/img/taxi.png", false, new Dimension(0, 0), BoundType.RECTANGULAR);
 		setPosition(new Vector2f((float)(screenSize.width / 2.0), (float)(screenSize.height / 2.0)));
 		setWorldPos(startingPos);
+		hasPassenger = false;
 	}
 
 	
@@ -57,6 +62,26 @@ public class Taxi extends Sprite {
 		addWorldPos(getVelocity().copy().scale(dt));
 		updateBounds();
 		updateAnimation(elapsedTime);
+		if (!pubtndown && i.isKeyDown(Input.KEY_SPACE)){
+			if (!hasPassenger) {
+				for (VIP v : MainMenu.sprites.getVIPs()) {
+					if (v.getWorldPos().distance(this.getWorldPos()) < PICKUPDIST ) {
+						hasPassenger = true;
+						passenger = v;
+						v.isPassenger = true;
+						break;
+					}
+				}
+			} else {
+				hasPassenger = false;
+				passenger.isPassenger = false;
+				passenger.setWorldPos(this.getWorldPos().copy());
+				passenger.addWorldPos(new Vector2f(75,0).add(this.getRotation() + 90));
+			}
+			pubtndown = true;
+		} else if (!i.isKeyDown(Input.KEY_SPACE)) {
+			pubtndown = false;
+		}
 	}
 	
 	public void stopTheCar() {
