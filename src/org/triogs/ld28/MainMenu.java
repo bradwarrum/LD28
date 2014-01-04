@@ -2,6 +2,7 @@ package org.triogs.ld28;
 
 import java.awt.Dimension;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -17,12 +18,13 @@ public class MainMenu extends BasicGameState {
 	private Map map;
 	private Dimension screenDim;
 	public static SpriteManager sprites;
+	private Building bldg;
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		screenDim = new Dimension(container.getWidth(), container.getHeight());
 		inp = new Input(container.getHeight());
-		map = new Map("res/map/test1/test1.tmx");
+		map = new Map("res/map/city/city.tmx");
 		sprites = new SpriteManager(screenDim, map.getPassMatrix(), map.getTileSize());
 		for (int i = 0; i<500; i++) {
 			sprites.addScrub();
@@ -40,6 +42,10 @@ public class MainMenu extends BasicGameState {
 		}
 		VIPDisplay.setVIPs(vips);
 		
+		
+		bldg = new Building(new Vector3f(0.25f, 0.25f, 0),
+				new Vector3f(0.5f, 0.5f,0));
+		bldg.initgl();
 		// TODO Auto-generated method stub
 
 	}

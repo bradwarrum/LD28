@@ -34,4 +34,7 @@
    H4sIAAAAAAAAC+3ZywqCUBRAUf+hd/3/f2ajggxu7IFJa8GZOZCNcI86TU+nadz5i2v/xWGe6+AcV7pHAIBXu3kug7Nf6R5/2WN/vg2O/fmdfo1+jX6Nfo3vB7Bd9ufG+dHo1+jX2F9gu+wvjfOj0a/Rr9Gv0a8Z7Wd/XjbSz3P3mX6Nfo1+jX7N6Pnr/XeZ/a/Rr9Gv0a/Rr/H/CAAAAAAAAAAAAAAAlt0Bg6PiFABkAAA=
   </data>
  </layer>
+ <objectgroup name="Object Layer 1" width="80" height="80">
+  <object name="bldg1" x="192" y="1088" width="768" height="320"/>
+ </objectgroup>
 </map>

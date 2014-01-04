@@ -3,6 +3,7 @@ package org.triogs.ld28;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -16,6 +17,7 @@ public class Map {
 	private boolean[][] _passMatrix;
 	private Dimension _mapSize;
 	private Dimension _tileSize;
+	private Building bldg;
 	
 	public Map(String filepath) {
 		try {
@@ -23,6 +25,9 @@ public class Map {
 			_mapSize = new Dimension(_bgmap.getWidth(), _bgmap.getHeight());
 			_tileSize = new Dimension(_bgmap.getTileWidth(), _bgmap.getTileHeight());
 			_passMatrix = new boolean[_mapSize.width][_mapSize.height];
+			if (_bgmap.getObjectGroupCount() > 0) {
+				initializeBldgs();
+			}
 			int gid = -1;
 			for (int i = 0; i < _mapSize.width; i++) {
 				for (int k = 0; k < _mapSize.height; k++) {
@@ -144,7 +149,6 @@ public class Map {
 	}
 	
 	public void draw(Rectangle screen) {
-		//
 		Vector2f remainder = new Vector2f(screen.getLocation().x % _tileSize.width, 
 				screen.getLocation().y % _tileSize.height);
 		remainder = remainder.negate();
@@ -154,5 +158,18 @@ public class Map {
 		int sy =  (int)(screen.getLocation().y / _tileSize.height);
 		_bgmap.render((int)remainder.x, (int)remainder.y, sx, sy, width+1, height+1, 1, false);
 		//_bgmap.render((int)remainder.x, (int)remainder.y, sx, sy, width+1, height+1, 2, false);
+		bldg.draw(screen);
+	}
+	
+	private void initializeBldgs() {
+		for (int i = 0; i < _bgmap.getObjectCount(0); i++) {
+			bldg = new Building(new Vector3f(_bgmap.getObjectX(0, i)/ 512f - 1.25f, _bgmap.getObjectY(0,i) / -384.0f + 1.0f, 0),
+					new Vector3f((float)_bgmap.getObjectWidth(0,i) / 512f, (float)_bgmap.getObjectHeight(0,i)  / -384.0f, (float) -1f));
+			bldg.initgl();
+		}
+		/*bldg = new Building(new Vector3f(-0.25f, -0.25f, 0),
+				new Vector3f(0.5f, 0.5f,.5f));
+		bldg.initgl();*/
+		System.out.println(bldg);
 	}
 }

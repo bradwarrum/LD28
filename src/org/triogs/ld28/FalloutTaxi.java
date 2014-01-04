@@ -17,7 +17,7 @@ public class FalloutTaxi extends StateBasedGame{
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		this.getState(MAINMENU).init(container, this);
+		//this.getState(MAINMENU).init(container, this);
 		this.getState(PLAY).init(container, this);
 		this.enterState(MAINMENU);
 	}
