@@ -164,7 +164,7 @@ public class Map {
 	private void initializeBldgs() {
 		for (int i = 0; i < _bgmap.getObjectCount(0); i++) {
 			bldg = new Building(new Vector3f(_bgmap.getObjectX(0, i)/ 512f - 1.25f, _bgmap.getObjectY(0,i) / -384.0f + 1.0f, 0),
-					new Vector3f((float)_bgmap.getObjectWidth(0,i) / 512f, (float)_bgmap.getObjectHeight(0,i)  / -384.0f, (float) -1f));
+					new Vector3f((float)_bgmap.getObjectWidth(0,i) / 512f, (float)_bgmap.getObjectHeight(0,i)  / -384.0f, (float) -2f));
 			bldg.initgl();
 		}
 		/*bldg = new Building(new Vector3f(-0.25f, -0.25f, 0),
